@@ -9,7 +9,7 @@ It uses specialized agents to handle different parts of trip planning:
 - 🗺️ **Itinerary Agent** — creates a day-wise itinerary
 - 💬 **Final Response Agent** — combines the results into the final response
 
-Agents communicate through a shared `TravelState`, while **PostgreSQL** is used for long-term memory such as conversation history and user preferences.
+Agents communicate through a shared `TravelState`, while **MySQL** is used for long-term memory such as conversation history and user preferences.
 
 ## Architecture
 
@@ -76,8 +76,8 @@ GOOGLE_MAPS_API_KEY=your_api_key
 Configure the database in `application.properties`:
 
 ```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/tripmind
-spring.datasource.username=postgres
+spring.datasource.url=jdbc:mysql://localhost:3306/tripmind
+spring.datasource.username=root
 spring.datasource.password=your_password
 ```
 
