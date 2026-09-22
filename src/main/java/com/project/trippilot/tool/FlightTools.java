@@ -1,10 +1,16 @@
 package com.project.trippilot.tool;
 
 import com.project.trippilot.service.FlightSearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FlightTools {
+
+    private static final Logger log = LoggerFactory.getLogger(FlightTools.class);
 
     private final FlightSearchService flightSearchService;
 
@@ -45,9 +51,19 @@ public class FlightTools {
             )
             String destination ) {
 
-        return flightSearchService.searchFlights(
-                origin,
-                destination
-        );
+        try {
+            return flightSearchService.searchFlights(
+                    origin,
+                    destination
+            );
+        } catch (Exception e) {
+            log.error("Flight search tool failed for origin='{}', destination='{}'", origin, destination, e);
+            // Tool responses must be valid JSON for the Gemini API
+            return """
+                    {"error": "Flight search failed: %s"}
+                    """.formatted(e.getMessage() == null
+                            ? "unknown error"
+                            : e.getMessage().replace("\"", "'"));
+        }
     }
 }
